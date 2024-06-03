@@ -66,20 +66,41 @@ char	*ft_strdup(const char *s)
 	return (str);
 }
 
+static char	*read_file(int fd, char *buffer)
+{
+	int	bytes_read;
+
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	if (bytes_read <= 0)
+		return (NULL);
+	return (buffer);
+}
+
+int	check_newline(char *s, char c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != c && s[i] != '\0')
+		i++;
+	return (i);
+}
+
 char	*get_next_line(int fd)
 {
-	char		*buffer;
-	static char	*stash;
-	ssize_t	bytes;
+	char		*output;
+	char		buffer[BUFFER_SIZE + 1];
+	static char	rest[BUFFER_SIZE + 1];
 
-	if (fd <= 0)
-		return NULL;
+	if (fd < 0 || fd > 1023)
+		return (NULL);
 	if (!stash)
 		stash = ft_strdup("");
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
-	bytes = read(fd, buffer, BUFFER_SIZE);
-	stash = ft_strjoin(stash, buffer);
+	ft_bzero(buffer, BUFFER_SIZE + 1);
+
+	free(buffer);
+	return (output);
 }
- 
