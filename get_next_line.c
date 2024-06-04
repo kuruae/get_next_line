@@ -6,7 +6,7 @@
 /*   By: emagnani <emagnani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:35:16 by emagnani          #+#    #+#             */
-/*   Updated: 2024/05/31 18:25:19 by emagnani         ###   ########.fr       */
+/*   Updated: 2024/06/04 13:14:03 by emagnani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,12 @@ int	check_newline(char *s, char c)
 	return (i);
 }
 
+
+	if (check_newline(buffer, '\n') == 0)
+		ft_bzero(stash, BUFFER_SIZE + 1);
+	else
+		rest = buffer + check_newline(buffer, '\n');
+
 char	*get_next_line(int fd)
 {
 	char		*output;
@@ -94,8 +100,8 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || fd > 1023)
 		return (NULL);
-	if (!stash)
-		stash = ft_strdup("");
+	if (!rest)
+		output = ft_strdup("");
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
