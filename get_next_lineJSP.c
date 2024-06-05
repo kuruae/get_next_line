@@ -6,7 +6,7 @@
 /*   By: emagnani <emagnani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:35:16 by emagnani          #+#    #+#             */
-/*   Updated: 2024/06/05 17:17:06 by emagnani         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:56:27 by emagnani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2, size_t len)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		i;
 	int		j;
@@ -55,7 +55,7 @@ char	*ft_strjoin(char const *s1, char const *s2, size_t len)
 	while (s1[j])
 		str[i++] = s1[j++];
 	j = 0;
-	while ((s2[j] && j < len) || j >= len)
+	while (s2[j])
 		str[i++] = s2[j++];
 	str[i] = '\0';
 	return (str);
@@ -126,41 +126,37 @@ int	check_newline(char *s, char c)
 		*rest = *buffer + check_newline(buffer, '\n');
 	 */
 
-char	*fill_rest(char *buffer, int index)
-{
-	int		i;
-	char	*rest;
-
-	i = 0;
-	index++;
-	rest = malloc((BUFFER_SIZE - index) + 1);
-	while (buffer[index])
-		rest[i++] = buffer[index++];
-	rest[i] = '\0';
-	return (rest);
-}
-
 char	*get_next_line(int fd)
 {
 	char		*output;
 	char		buffer[BUFFER_SIZE + 1];
-	static char	*rest = "";
+	static char	rest[BUFFER_SIZE + 1] = "";
 	int			newline_pos;
 
 	if (fd < 0 || fd > 1023)
 		return (NULL);
-	output = ft_strdup("");
-	if (rest != NULL)
-		ft_strjoin(output, rest, BUFFER_SIZE);
-	ft_memset(rest, 0, BUFFER_SIZE + 1);
-	newline_pos = check_newline('\n');
-	if (buffer[newline_pos] != '\n')
-		ft_strjoin(output, buffer, BUFFER_SIZE);
-	else if (buffer[newline_pos] == '\n')
+/* 	if (!rest)
+		output = ft_strdup(""); */
+	while (1)
 	{
-		ft_strjoin(output, buffer, newline_pos);
-		free(rest);
-		rest = fill_rest(buffer, newline_pos);
+/* 		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+		if (!buffer)
+			return (NULL); */
+		newline_pos = check_newline(buffer, '\n');
+		if (buffer[newline_pos] == '\n')
+		{
+			buffer[newline_pos + 1] == '\0';
+			output = ft_strjoin(rest, buffer);
+			ft_memset(rest, 0, BUFFER_SIZE + 1);
+			ft_memcpy(rest, buffer + newline_pos + 1, BUFFER_SIZE - newline_pos);
+			break ;
+		}
+		ft_strjoin(rest, buffer);
+		ft_memset(buffer, 0, BUFFER_SIZE + 1);
+		if (!read_file(fd, buffer))
+			break ;
 	}
+	if (!*output && *rest)
+		output = ft_strdup(rest);
 	return (output);
 }
