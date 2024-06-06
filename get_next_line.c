@@ -25,7 +25,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strnjoin(char const *s1, char const *s2, size_t len)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		i;
 	int		j;
@@ -43,10 +43,28 @@ char	*ft_strnjoin(char const *s1, char const *s2, size_t len)
 	while (s1[j])
 		str[i++] = s1[j++];
 	j = 0;
-	while ((s2[j] && j < len) || j >= len)
+	while (s2[j])
 		str[i++] = s2[j++];
 	str[i] = '\0';
 	return (str);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	char			chr;
+	unsigned int	i;
+
+	chr = c;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == chr)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if (s[i] == chr)
+		return ((char *)&s[i]);
+	return (NULL);
 }
 
 char	*ft_strdup(const char *s)
@@ -89,66 +107,96 @@ static char	*read_file(int fd, char *buffer)
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read <= 0)
 		return (NULL);
+	buffer[bytes_read] = '\0';
 	return (buffer);
 }
 
-int	check_newline(char *s, char c)
+int	find_newline(char *s, char c)
 {
 	int	i;
 
 	i = 0;
-	while (s[i] != c && s[i] != '\0')
+	while (s[i])
+	{
+		if (s[i] == '\n')
+			return (i);
 		i++;
-	if (i == 0 && s[i] != c)
-		return (-1);
-	return (i);
+	}
+	return (-1);
 }
 
-char	*fill_rest(char *buffer, int index, char *rest)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	int		i;
+	size_t	i;
+	size_t	j;
+	char	*substr;
 
-	i = 0;
-	index++;
-	while (buffer[index])
-		rest[i++] = buffer[index++];
-	rest[i] = '\0';
-	return (rest);
+	i = (size_t)start;
+	j = 0;
+	if (start >= ft_strlen(s))
+		return (ft_strdup(""));
+	if (len + start >= ft_strlen(s))
+		len = ft_strlen(s) - start;
+	substr = malloc((len + 1) * sizeof(char));
+	if (!substr)
+		return (NULL);
+	while (j < len)
+	{
+		substr[j] = s[i];
+		i++;
+		j++;
+	}
+	substr[j] = '\0';
+	return (substr);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t	src_len;
+
+	src_len = ft_strlen(src);
+	if (src_len + 1 < size)
+		ft_memcpy(dst, src, src_len + 1);
+	else if (size != 0)
+	{
+		ft_memcpy(dst, src, size - 1);
+		dst[size - 1] = '\0';
+	}
+	return (src_len);
+}
+
+static void	fill_rest(char *rest, char *buffer)
+{
+	const int	index = find_newline(buffer, '\n');
+
+	ft_memset(rest, 0, BUFFER_SIZE);
+	ft_strlcpy(rest, buffer + index + 1, ft_strlen(buffer + index));
 }
 
 char	*get_next_line(int fd)
 {
-	char		*output;
+	static char	rest[BUFFER_SIZE + 1];
 	char		buffer[BUFFER_SIZE + 1];
-	static char	*rest = {0};
+	char		*output;
 	int			newline_pos;
-	ssize_t		read_size;
+	ssize_t		bytes_read;
 
-	if (fd < 0 || fd > 1023)
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0)
 		return (NULL);
 	output = ft_strdup("");
-	if (rest != NULL)
+	if (!output)
+		return (NULL);
+	if (rest)
 	{
-		ft_strnjoin(output, rest, BUFFER_SIZE);
-		free(rest);
+		output = ft_strjoin(output, rest);
+		rest[0] = '\0';
 	}
-	ft_memset(rest, 0, BUFFER_SIZE + 1);
-
-	while ((read_size = read(fd, buffer, BUFFER_SIZE)) > 0)
-	{
-		buffer[read_size] = '\0';
-		newline_pos = check_newline(buffer, '\n');
-		if (newline_pos != -1)
-		{
-			ft_strnjoin(output, buffer, newline_pos);
-			rest = malloc((BUFFER_SIZE - newline_pos) + 1);
-			if (!rest)
-				return (NULL);
-			rest = fill_rest(buffer, newline_pos, rest);
-			break ;
-		}
-		else
-			ft_strnjoin(output, buffer, BUFFER_SIZE);
+	// a mettre dans une fonction externe read a faire plus tard
+	while (!ft_strchr(buffer, '\n') || bytes_read > 0)
+	{		
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		output = ft_strjoin(output, buffer);
 	}
+	fill_rest(rest, buffer);
 	return (output);
 }
