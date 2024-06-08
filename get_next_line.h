@@ -6,7 +6,7 @@
 /*   By: emagnani <emagnani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:49:08 by emagnani          #+#    #+#             */
-/*   Updated: 2024/06/06 14:07:55 by emagnani         ###   ########.fr       */
+/*   Updated: 2024/06/08 20:55:55 by emagnani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@
 # include <limits.h>
 
 char	*get_next_line(int fd);
-
+char	*fill_rest(char *output, char *rest);
+char	*read_line(int fd, char *output);
+size_t	ft_strlen(const char *s);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strchr(const char *s, int c);
+char	*ft_substr(char *s, unsigned int start, size_t len);
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emagnani <emagnani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 14:35:16 by emagnani          #+#    #+#             */
-/*   Updated: 2024/06/05 17:17:06 by emagnani         ###   ########.fr       */
+/*   Updated: 2024/06/08 19:11:36 by emagnani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,10 @@ char	*fill_rest(char *buffer, int index)
 	return (rest);
 }
 
+char	*read_line(int fd, char *output)
+{
+	int
+}
 char	*get_next_line(int fd)
 {
 	char		*output;
