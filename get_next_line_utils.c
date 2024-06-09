@@ -6,7 +6,7 @@
 /*   By: emagnani <emagnani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 13:58:41 by emagnani          #+#    #+#             */
-/*   Updated: 2024/06/08 20:51:14 by emagnani         ###   ########.fr       */
+/*   Updated: 2024/06/09 15:24:30 by emagnani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	result[len] = '\0';
+	free(s1);
 	return (result);
 }
 
