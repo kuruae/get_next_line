@@ -6,7 +6,7 @@
 /*   By: emagnani <emagnani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 20:51:28 by emagnani          #+#    #+#             */
-/*   Updated: 2024/06/10 17:55:29 by emagnani         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:56:14 by emagnani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,22 @@ char	*fill_rest(char *output, char *rest)
 	return (rest);
 }
 
+char	*allocate_buffer(void)
+{
+	char	*buffer;
+
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	return (buffer);
+}
+
 char	*read_line(int fd, char *output)
 {
 	ssize_t	bytes_read;
 	char	*buffer;
 
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buffer = allocate_buffer();
 	if (!buffer)
-	{
-		free(buffer);
 		return (NULL);
-	}
 	bytes_read = 1;
 	while (bytes_read > 0 && !ft_strchr(output, '\n'))
 	{

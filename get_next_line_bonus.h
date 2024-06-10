@@ -6,7 +6,7 @@
 /*   By: emagnani <emagnani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:49:08 by emagnani          #+#    #+#             */
-/*   Updated: 2024/06/10 13:36:10 by emagnani         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:54:45 by emagnani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char *s, unsigned int start, size_t len);
+char	*allocate_buffer(void);
 
 #endif
