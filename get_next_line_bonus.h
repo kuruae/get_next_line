@@ -6,7 +6,7 @@
 /*   By: emagnani <emagnani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 15:49:08 by emagnani          #+#    #+#             */
-/*   Updated: 2024/06/09 18:10:22 by emagnani         ###   ########.fr       */
+/*   Updated: 2024/06/10 13:36:10 by emagnani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1000
+#  define BUFFER_SIZE 42
 # endif
 
 # include <fcntl.h>
